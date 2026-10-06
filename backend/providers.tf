@@ -4,10 +4,10 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Project   = "lab3-iac"
-      Team      = "lucca-christian"
+      Project   = "charla-aws"
+      Team      = "lucca-maxi"
       ManagedBy = "terraform"
-      Repo      = "lab3-iac-lc"
+      Repo      = "charla_aws_terraform"
       Component = "backend"
     }
   }
