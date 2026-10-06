@@ -56,12 +56,11 @@ La aplicación **nunca conoce la dirección IP de la base**. La busca por nombre
 (`mysql.lab3.local`) a través de Cloud Map, el servicio de descubrimiento de AWS. Es la
 diferencia entre que la base se reinicie sin que nadie lo note y una caída de dos horas.
 
-Alrededor de eso hay dos circuitos más:
+Alrededor de eso hay un circuito más:
 
 - **Despliegue automático**: un push al repositorio de la aplicación construye la imagen,
-  la sube al registro y actualiza el servicio, sin que nadie toque nada.
-- **Monitoreo**: un tablero con métricas de infraestructura y de negocio, y alarmas que
-  avisan por mail.
+  la sube al registro y actualiza el servicio con un blue/green, sin que nadie toque nada.
+  Si el pipeline falla, avisa por mail.
 
 ---
 
@@ -128,10 +127,10 @@ que los módulos están bien recortados.
 | Red | 1 VPC, 4 subredes en 2 zonas, gateway de internet, 1 NAT, tablas de ruteo |
 | Seguridad | 5 grupos de seguridad encadenados, roles y políticas de IAM por servicio |
 | Cómputo | 1 cluster ECS, 3 instancias EC2 en auto scaling, 2 servicios, 3 contenedores |
-| Datos | 1 sistema de archivos EFS con punto de montaje por zona, 6 parámetros en SSM |
+| Datos | 1 sistema de archivos EFS con punto de montaje por zona, 7 parámetros en SSM |
 | Entrada | 1 balanceador, 2 grupos de destino, certificado de ACM, registro en Route 53 |
 | Despliegue | Registro ECR, pipeline de 3 etapas, proyecto de build, bucket de artefactos |
-| Monitoreo | 1 tablero, 6 alarmas, 1 tópico de notificaciones |
+| Avisos | 1 tópico SNS con suscripción por mail para el pipeline |
 
 ---
 
@@ -195,9 +194,9 @@ enlace al tablero de métricas.
 |---|---|
 | [`docs/runbook.md`](docs/runbook.md) | Levantar el entorno desde cero, y operarlo |
 | [`docs/decisiones-modulos.md`](docs/decisiones-modulos.md) | Por qué cada módulo es propio |
-| [`docs/estado-actual.md`](docs/estado-actual.md) | Estado real, verificaciones y trampas ya resueltas |
+| [`docs/estado-actual.md`](docs/estado-actual.md) | **Histórico** del lab original: verificaciones y trampas ya resueltas |
 | [`CONVENCIONES.md`](CONVENCIONES.md) | Reglas de código, nombres y flujo de trabajo |
-| [`PLAN-FASES.md`](PLAN-FASES.md) | Las diez fases y el criterio de cierre de cada una |
+| [`PLAN-FASES.md`](PLAN-FASES.md) | **Histórico**: las diez fases del lab original |
 | `modules/*/README.md` | El detalle técnico de cada pieza |
 
 ---
@@ -211,6 +210,5 @@ Cada módulo cierra con su propia tabla de esto. Lo transversal:
 | MySQL en contenedor sobre EFS | RDS Multi-AZ, con backups automáticos |
 | Un NAT Gateway | Uno por zona de disponibilidad |
 | Dos zonas de disponibilidad | Tres, que es el mínimo para quórum |
-| Umbrales de alarma estimados | Derivados de un objetivo de servicio acordado |
-| Alarmas al mail | Guardias con escalamiento |
+| Sin alarmas ni dashboard | Observabilidad con alarmas sobre un objetivo de servicio, y guardias con escalamiento |
 | Un solo entorno | `dev`, `staging` y `prod` con estados separados |

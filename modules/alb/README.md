@@ -84,7 +84,7 @@ un certificado a medio emitir falla.
 | `alternate_target_group_arn` | `advanced_configuration` del blue/green |
 | `production_listener_rule_arn` | `advanced_configuration` del blue/green |
 | `load_balancer_role_arn` | `advanced_configuration` del blue/green |
-| `alb_arn_suffix` / `target_group_arn_suffix` | Las alarmas de CloudWatch de la Fase 8 |
+| `alb_arn_suffix` / `target_group_arn_suffix` | Hoy sin uso. Los consumía el módulo de observabilidad (alarmas) |
 
 ## Verificación
 

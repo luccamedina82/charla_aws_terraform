@@ -120,7 +120,9 @@ módulo.
 
 El topic lo consumen la Fase 7 (CodePipeline vía CodeStar Notifications) y la Fase 8
 (alarmas de CloudWatch). Si viviera dentro de `cicd`, la observabilidad dependería del
-pipeline sin ninguna razón real, y no se podría aplicar la Fase 8 sin la 7.
+pipeline sin ninguna razón real, y no se podría aplicar la Fase 8 sin la 7. En la versión
+de la charla solo lo consume `cicd`, pero el límite se mantiene para cuando vuelva la
+observabilidad.
 
 Son dos recursos y una policy, así que no hay módulo de la comunidad que valga la pena:
 lo que aporta el módulo es el límite, no el código. La `aws_sns_topic_policy` que
@@ -141,48 +143,9 @@ a esa altura no queda módulo: queda un envoltorio.
 La CodeStar Connection nace en `PENDING` y se autoriza a mano en la consola. Es **la**
 excepción al "sin consola" del enunciado, y está documentada como tal en el runbook.
 
-## github-oidc
+## Módulos que se sacaron para la charla
 
-**Origen**: propio, y es el caso más discutible de la lista: existe
-`terraform-aws-modules/iam//modules/iam-github-oidc-role`, que cubre bastante de esto.
-
-Lo que inclinó la balanza fueron dos cosas concretas. Primero, los **dos roles con trust
-policy distinta sobre el mismo proveedor** —`plan` asumible desde cualquier PR, `apply`
-solo desde `ref:refs/heads/develop`— que es toda la razón de ser del módulo: un PR no
-puede aplicar. Segundo, el escape para cuando el OIDC provider **ya existe en la
-cuenta**: AWS permite uno solo por URL, y sin `create_oidc_provider = false` el apply
-falla con `EntityAlreadyExists`.
-
-El thumbprint sale de un `data "tls_certificate"` en vivo, no hardcodeado: si GitHub
-rota su raíz, el próximo apply lo actualiza solo.
-
-**Sobre los permisos**: `plan` usa `ReadOnlyAccess` y `apply` usa `AdministratorAccess`,
-a propósito. Mantener una política de mínimo privilegio sincronizada con cada módulo
-nuevo no es proporcional a un lab de una semana, y el control real de quién aplica lo da
-la condición de rama en el trust policy, no el alcance de la sesión. En producción se
-reduciría a los servicios que el código toca de verdad.
-
-## observability
-
-**Origen**: propio, y no podría no serlo: el entregable **es** el dashboard, y el
-dashboard es específico de esta app.
-
-Las tres fuentes de métricas ya existían — `AWS/ApplicationELB`,
-`ECS/ContainerInsights` y `Lab3/Ecommerce`, que sale de las líneas EMF que la app ya
-escribía a stdout. No hace falta ningún agente. Esa tercera fuente es lo que separa el
-dashboard de uno genérico: un pico de 5xx no dice cuánto costó, `PedidosFallidos` sí.
-
-Las dos decisiones que hay que poder defender:
-
-- **`treat_missing_data` elegido alarma por alarma**, no dejado en el default. "Sin
-  datos" significa cosas distintas: que no haya 5xx de madrugada es normal
-  (`notBreaching`), que no haya tasks corriendo no lo es (`breaching`).
-- **Las alarmas de targets suman los dos target groups** con `metric_query` `m1+m2`. El
-  blue/green alterna cuál está activo, y mirar uno solo deja la alarma ciega después de
-  cada deploy.
-
-Los umbrales están elegidos a ojo y cada alarma lo dice en su `alarm_description`, así
-que la salvedad viaja a la consola en vez de quedarse en un README.
+`github-oidc` (roles para que GitHub Actions corra `plan`/`apply`) y `observability` (alarmas y dashboard sobre las métricas EMF de la app de e-commerce) existían en el lab original. Se sacaron al adaptarlo para la charla: Terraform se corre a mano y la observabilidad queda para otra charla.
 
 ---
 

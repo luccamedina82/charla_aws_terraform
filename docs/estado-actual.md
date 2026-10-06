@@ -1,5 +1,7 @@
 # Estado actual del proyecto
 
+> **Documento histórico.** Describe el Lab 3 original de Teracloud (app PHP de e-commerce, dominio `teratest.net`, módulos `github-oidc` y `observability`). No refleja la versión adaptada para la charla. Para el estado actual ver `README.md` y `docs/runbook.md`.
+
 **Actualizado**: martes 25/08, con las Fases 0 a 8 aplicadas. El pipeline corre
 end-to-end, el dashboard tiene datos reales y `terraform plan` da **No changes**.
 Lo único que falta es la Fase 9 (destroy + apply desde cero) y el diagrama.

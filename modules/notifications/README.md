@@ -5,6 +5,9 @@ Topic SNS + suscripciones por mail. Separado de `cicd` a propósito
 CodeStar Notifications) y la Fase 8 (alarmas de CloudWatch). Si viviera
 dentro de `cicd`, la Fase 8 dependería de la Fase 7 sin ninguna razón real.
 
+En la versión de la charla la Fase 8 no está, así que hoy solo lo consume `cicd`. La
+separación se mantiene: deja lista la vuelta de la observabilidad.
+
 ## Qué crea
 
 - `aws_sns_topic.this`

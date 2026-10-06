@@ -1,6 +1,6 @@
 # Convenciones — Desafío IaC (Lab 3)
 
-Equipo: Lucca · Christian · Entrega: **jueves 27/08 10:30**
+Equipo original: Lucca · Christian (Lab 3 de Teracloud, entregado el 27/08). Adaptado para la charla AWS en UTN FRC: Lucca · Maxi.
 
 Este archivo se mergea en el **PR 0**, antes de escribir el primer `resource`.
 Si algo acá no se cumple, el PR no se aprueba.
@@ -83,9 +83,9 @@ No repetir el tipo: `aws_ecs_cluster.this`, no `aws_ecs_cluster.ecs_cluster`.
 ```hcl
 default_tags {
   tags = {
-    Project     = "lab3-iac"
+    Project     = "charla-aws"
     Environment = var.environment
-    Team        = "lucca-christian"
+    Team        = "lucca-maxi"
     ManagedBy   = "terraform"
     Repo        = "charla_aws_terraform"
   }
@@ -145,5 +145,4 @@ Si no, acuerdo explícito + `CODEOWNERS`.
 | Secretos por bloque `secrets` + `valueFrom`, no `environment` | Llega igual como variable de entorno al contenedor, pero la task definition solo guarda el ARN |
 | Imagen `bootstrap` en ECR antes del apply completo | El servicio ECS no alcanza steady state sin imagen. Va en `runbook.md` |
 | CodeStar Connection autorizada a mano en consola | El handshake OAuth con GitHub no es automatizable. Es *la* excepción al "sin consola" |
-| OIDC con dos roles: read-only para `plan`, escritura para `apply` | Un PR no debe poder aplicar. Trust policy con el `sub` exacto de CloudTrail |
 | MySQL en contenedor sobre EFS, no RDS | Lo pide el enunciado. En producción: RDS Multi-AZ |

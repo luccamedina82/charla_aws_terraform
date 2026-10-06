@@ -150,7 +150,7 @@ aws codestar-connections list-connections   --query 'Connections[].[ConnectionNa
 
 **3. Confirmar las suscripciones de mail.** Cada dirección de
 `var.notification_emails` recibe un pedido de confirmación. **Hasta que no se haga clic,
-el topic no notifica a nadie** — y no hay ningún error visible: las alarmas disparan y
+el topic no notifica a nadie** — y no hay ningún error visible: el pipeline falla y
 el mail no llega.
 
 ```bash
@@ -263,7 +263,7 @@ aws ecs describe-tasks --cluster lab3-lc-dev-cluster --tasks <arn> \
 | Build muere en fase `QUEUED` | El rol de CodeBuild no puede escribir sus logs. El log group real es `/aws/codebuild/<proyecto>`, con el prefijo `/aws` |
 | `Bad substitution` en el buildspec | CodeBuild ejecuta cada comando con `/bin/sh` (dash), no bash. Nada de `${VAR:0:7}` ni otras bashisms |
 | Deploy: `role does not have sufficient permissions to access ECS` | Al rol del pipeline le falta alguna de las siete acciones que pide el deploy provider — el mensaje no dice cuál |
-| Las alarmas disparan y no llega el mail | La suscripción SNS quedó en `PendingConfirmation` |
+| El pipeline falla y no llega el mail | La suscripción SNS quedó en `PendingConfirmation` |
 
 ---
 

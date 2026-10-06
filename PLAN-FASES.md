@@ -1,5 +1,7 @@
 # Plan por fases — Desafío IaC (Lab 3)
 
+> **Documento histórico.** Describe el Lab 3 original de Teracloud (app PHP de e-commerce, dominio `teratest.net`, módulos `github-oidc` y `observability`). No refleja la versión adaptada para la charla. Para el estado actual ver `README.md` y `docs/runbook.md`.
+
 **Regla única**: no se arranca una fase sin el *Listo cuando* de la anterior en verde.
 Cada fase = una rama `feature/*` = un PR a `develop`.
 

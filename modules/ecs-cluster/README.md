@@ -107,7 +107,7 @@ una imagen nueva. Un ID de AMI pública no es un secreto.
 | `capacity_provider_name` | `capacity_provider_strategy` de cada servicio |
 | `namespace_id` / `namespace_arn` | `aws_service_discovery_service` de MySQL |
 | `namespace_name` | `ssm-parameters`, para componer `DB_HOST = mysql.<namespace>` |
-| `asg_name` | Alarmas de `CPUUtilization` de la Fase 8 |
+| `asg_name` | Hoy sin uso. Lo consumía el módulo de observabilidad (alarmas de `CPUUtilization`) |
 | `instance_role_name` | Por si otro módulo necesita adjuntarle una policy |
 
 ## Verificación
