@@ -1,0 +1,14 @@
+# Normalización de fin de línea.
+#
+# El equipo trabaja mitad en Windows nativo y mitad en WSL. Sin esto, git
+# convierte a CRLF al hacer checkout en Windows, y el heredoc del user_data
+# del launch template se lleva los \r adentro del script: la instancia
+# arranca con "#!/bin/bash\r", el intérprete no existe, nunca se escribe
+# ECS_CLUSTER en /etc/ecs/ecs.config y el cluster se queda en 0 instancias
+# registradas. El síntoma no apunta ni de cerca a los fines de línea.
+* text=auto eol=lf
+
+# Binarios: que git no intente normalizarlos nunca.
+*.png binary
+*.jpg binary
+*.pdf binary

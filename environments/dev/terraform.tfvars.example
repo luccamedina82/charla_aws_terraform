@@ -1,0 +1,15 @@
+# cp terraform.tfvars.example terraform.tfvars
+#
+# Todas las variables tienen default, así que terraform.tfvars es opcional.
+# Existe para poder cambiar el perfil de AWS sin tocar código versionado
+# (terraform.tfvars está en .gitignore).
+
+environment = "dev"
+aws_region  = "us-east-1"
+
+# aws_profile = "lab3"
+
+db_name = "trivia"
+db_user = "trivia"
+
+notification_emails = ["luccamedina03@gmail.com"]

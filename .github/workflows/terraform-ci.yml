@@ -1,0 +1,49 @@
+name: terraform-ci
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+# Dos pushes seguidos a develop pelearían por el lock del backend.
+concurrency:
+  group: tf-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TF_VERSION: "1.13.0"
+
+jobs:
+  static:
+    name: fmt / validate / tflint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: terraform fmt
+        run: terraform fmt -check -recursive
+
+      # -backend=false: validar sintaxis no necesita credenciales ni backend
+      - name: terraform validate
+        run: |
+          terraform -chdir=environments/dev init -backend=false
+          terraform -chdir=environments/dev validate
+
+      - uses: terraform-linters/setup-tflint@v4
+
+      # tflint --init descarga los plugins de .tflint.hcl. Sin este paso,
+      # --recursive falla con "plugin not installed".
+      - name: tflint
+        run: |
+          tflint --init
+          tflint --recursive
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
